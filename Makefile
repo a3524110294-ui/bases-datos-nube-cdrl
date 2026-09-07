@@ -8,6 +8,8 @@ setup:
 
 verify:
 	@bash scripts/verify_base.sh
+	@echo "Esperando a que Postgres este listo..."
+	@i=0; until docker compose exec -T postgres pg_isready -U cdrl_dev -d cdrl >/dev/null 2>&1 || [ $$i -ge 30 ]; do i=$$((i+1)); sleep 1; done
 	python src/apply_migrations.py
 	python db/seed/seed_data.py
 	python -m pytest tests/ -v
