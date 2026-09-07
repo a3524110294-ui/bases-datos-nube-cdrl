@@ -1,21 +1,31 @@
 {
-  "assignmentId": "m01-data-contract",
-  "commitSha": "REPLACE_AT_SUBMISSION",
-  "commands": [
-    "make setup",
-    "make verify",
-    "make run"
-  ],
-  "results": {
-    "starterBase": "pending_team_execution"
-  },
-  "assumptions": [
-    "El equipo elegirá y documentará el lenguaje de la aplicación.",
-    "AWS Academy Learner Lab se usará solo si el servicio está habilitado.",
-    "Los datos iniciales serán sintéticos."
-  ],
-  "limitations": [
-    "La base inicial no es una implementación completa de M01.",
-    "La imagen local de DynamoDB debe fijarse y reportarse cuando el equipo la use."
-  ]
+    "assignmentId": "m01-data-contract",
+    "commitSha": "PENDIENTE",
+    "commands": [
+        "docker compose up -d postgres",
+        "python src/apply_migrations.py",
+        "python db/seed/seed_data.py",
+        "python -m pytest tests/ -v"
+    ],
+    "results": {
+        "migrations": [
+            "0001_create_telemetry_readings.sql"
+        ],
+        "tests": {
+            "tests": 4,
+            "failures": 0,
+            "errors": 0,
+            "status": "passed"
+        }
+    },
+    "assumptions": [
+        "Lenguaje de aplicacion elegido: Python (ver docs/ADR-001-lenguaje-y-esquema.md).",
+        "AWS Academy Learner Lab ya esta habilitado en la cuenta del equipo; para esta entrega se uso Docker Compose + PostgreSQL local por tiempo, dejando el uso de AWS Academy para un proximo hito.",
+        "Los datos del seed son de prueba, insertados manualmente para validar el esquema."
+    ],
+    "limitations": [
+        "No se uso 'make' porque Git Bash en Windows no lo trae instalado; los comandos del Makefile se corrieron manualmente uno por uno (ver 'commands' arriba).",
+        "No se implementa autenticacion de aplicacion en este hito; se asume acceso restringido por las credenciales del entorno local.",
+        "DynamoDB queda declarado en docker-compose.yml pero no se uso en este hito."
+    ]
 }
