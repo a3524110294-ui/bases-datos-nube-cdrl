@@ -1,6 +1,6 @@
 {
     "assignmentId": "m01-data-contract",
-    "commitSha": "PENDIENTE",
+    "commitSha": "b98f44882a550a249ee72bdb36fd4671c7d3ccc4",
     "commands": [
         "docker compose up -d postgres",
         "python src/apply_migrations.py",
