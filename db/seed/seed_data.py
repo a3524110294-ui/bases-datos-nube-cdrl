@@ -15,7 +15,13 @@ lecturas_de_prueba = [
     ("SENSOR-02", "battery_level", 87.0, "pct", "2026-09-01 09:00:00"),
 ]
 
-insert_sql = "INSERT INTO telemetry_readings (device_id, metric_name, metric_value, unit, recorded_at) VALUES (%s, %s, %s, %s, %s);"
+insert_sql = """
+INSERT INTO telemetry_readings (device_id, metric_name, metric_value, unit, recorded_at)
+VALUES (%s, %s, %s, %s, %s)
+ON CONFLICT (device_id, metric_name, recorded_at) DO UPDATE SET
+    metric_value = EXCLUDED.metric_value,
+    unit = EXCLUDED.unit;
+"""
 
 with conn.cursor() as cur:
     for lectura in lecturas_de_prueba:

@@ -15,6 +15,23 @@ def conectar():
 insert_sql = "INSERT INTO telemetry_readings (device_id, metric_name, metric_value, unit, recorded_at) VALUES (%s, %s, %s, %s, %s) RETURNING reading_id;"
 
 
+@pytest.fixture(autouse=True)
+def limpiar_datos_de_prueba():
+    conn = conectar()
+    with conn.cursor() as cur:
+        cur.execute("DELETE FROM telemetry_readings WHERE device_id LIKE 'TEST-%'")
+    conn.commit()
+    conn.close()
+
+    yield
+
+    conn = conectar()
+    with conn.cursor() as cur:
+        cur.execute("DELETE FROM telemetry_readings WHERE device_id LIKE 'TEST-%'")
+    conn.commit()
+    conn.close()
+
+
 def test_caso_normal_lectura_valida():
     conn = conectar()
     with conn.cursor() as cur:
@@ -59,6 +76,18 @@ def test_fallo_declarado_device_id_vacio_es_rechazado():
         with conn.cursor() as cur:
             cur.execute(
                 insert_sql, (None, "temperature", 20.0, "C", "2026-09-01 10:00:00")
+            )
+    conn.rollback()
+    conn.close()
+
+
+def test_fallo_declarado_bateria_fuera_de_rango_es_rechazado():
+    conn = conectar()
+    with pytest.raises(Exception):
+        with conn.cursor() as cur:
+            cur.execute(
+                insert_sql,
+                ("TEST-BATERIA", "battery_level", 101.0, "pct", "2026-09-01 10:00:00"),
             )
     conn.rollback()
     conn.close()

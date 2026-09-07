@@ -2,6 +2,12 @@
 
 Esta carpeta es la base común del proyecto **Cloud Data Reliability Lab (CDRL)** para la asignatura **Bases de datos en la nube**.
 
+## M01 - Contrato de datos
+
+En este hito se agrego una base relacional en PostgreSQL para guardar lecturas de telemetria. La tabla principal es `telemetry_readings`, con campos para sensor, metrica, valor, unidad y fecha de registro.
+
+El contrato se valida desde la base con columnas obligatorias y restricciones para metricas permitidas, unidades permitidas y rangos validos de bateria/humedad. Los datos iniciales son sinteticos.
+
 ## Flujo de inicio
 
 1. Descarga esta base desde Google Classroom.
@@ -10,6 +16,8 @@ Esta carpeta es la base común del proyecto **Cloud Data Reliability Lab (CDRL)*
 4. Agrega únicamente a los integrantes del equipo, con un máximo de tres personas.
 5. Ejecuta `make setup`, `make verify` y `make run`.
 6. Completa el hito semanal y conserva evidencia técnica individual de tu contribución.
+
+Si `make` no esta instalado en Windows, se pueden ejecutar los comandos del `Makefile` desde Git Bash, WSL o un entorno Linux.
 
 El lenguaje de la aplicación lo selecciona el equipo y debe documentarse en un ADR. La interfaz mínima común del repositorio es:
 
@@ -24,6 +32,18 @@ make run
 - AWS Academy Learner Lab es el entorno cloud oficial cuando el servicio esté habilitado.
 - Docker Compose/PostgreSQL y el emulador local declarado por el equipo son el respaldo reproducible.
 - No uses cuentas personales con facturación, ni subas credenciales, tokens o datos sensibles.
+
+## Verificacion del hito
+
+`make verify` revisa la estructura base, espera PostgreSQL, aplica migraciones, carga seed sintetico, ejecuta pruebas automaticas y genera `artifacts/m01-verify.json`.
+
+Las pruebas cubren:
+
+- caso normal: lectura valida de temperatura;
+- caso limite: bateria en `0`;
+- caso limite: fecha historica antigua;
+- fallo declarado: `device_id` nulo;
+- fallo declarado adicional: bateria mayor a `100`.
 
 ## Primera entrega
 

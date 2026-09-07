@@ -1,18 +1,18 @@
 {
     "assignmentId": "m01-data-contract",
-    "commitSha": "0a6656fdf3017227499db8f189e40c7f2c00aaf1",
+    "commitSha": "PENDING_FINAL_SUBMISSION_SHA",
     "commands": [
-        "docker compose up -d postgres",
-        "python src/apply_migrations.py",
-        "python db/seed/seed_data.py",
-        "python -m pytest tests/ -v"
+        "make setup",
+        "make verify",
+        "make run"
     ],
     "results": {
         "migrations": [
             "0001_create_telemetry_readings.sql"
         ],
+        "artifact": "artifacts/m01-verify.json",
         "tests": {
-            "tests": 4,
+            "tests": 5,
             "failures": 0,
             "errors": 0,
             "status": "passed"
@@ -24,7 +24,7 @@
         "Los datos del seed son de prueba, insertados manualmente para validar el esquema."
     ],
     "limitations": [
-        "No se uso 'make' porque Git Bash en Windows no lo trae instalado; los comandos del Makefile se corrieron manualmente uno por uno (ver 'commands' arriba).",
+        "En Windows puede usarse Git Bash, WSL o los comandos equivalentes si make no esta instalado.",
         "No se implementa autenticacion de aplicacion en este hito; se asume acceso restringido por las credenciales del entorno local.",
         "DynamoDB queda declarado en docker-compose.yml pero no se uso en este hito."
     ]

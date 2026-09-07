@@ -13,6 +13,8 @@ verify:
 	python src/apply_migrations.py
 	python db/seed/seed_data.py
 	python -m pytest tests/ -v
+	python scripts/write_artifact.py
 
 run:
-	docker compose up
+	docker compose up -d postgres
+	python scripts/run_summary.py
